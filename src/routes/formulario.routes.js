@@ -1,7 +1,27 @@
 import { Router } from 'express';
-const router = Router();
-Router.get('/formulario', (req, res) => res.send('obteniendo datos'));
-Router.post('/formulario', (req, res) => res.send('enviando datos'));
-Router.put('/formulario', (req, res) => res.send('actualizando datos'));
-Router.delete('/formulario', (req, res) => res.send('eliminando datos'));
-export default router;
+import {
+    createUsuario,
+    deleteUsuario,
+    getUsuario,
+    getUsuarios,
+    updateUsuario,
+} from '../controllers/formulario.controller.js';
+
+  
+  const router = Router();
+  
+  // GET todos los usuarios
+  router.get("/formulario", getUsuarios);
+  
+  // GET un usuario
+  router.get("/formulario/:id", getUsuario);
+  
+  // DELETE un usuario
+  router.delete("/formulario/:id", deleteUsuario);
+  
+  // INSERT un usuario
+  router.post("/formulario", createUsuario);
+  
+  router.patch("/employees/:id", updateUsuario);
+  
+  export default router;
