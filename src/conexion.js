@@ -1,29 +1,31 @@
+import { config } from "dotenv";
 import pkg from 'mssql';
 const { connect } = pkg; 
 
-// Configuración de la conexión
-const config = {
-  user: 'adminsql@servidodb',
-  password: 'Y1506mt.',
-  server: 'servidodb.database.windows.net',
-  database: 'Regristro', 
+// Configurar dotenv
+config();
+
+// Configuración de la conexión usando las variables de entorno
+const dbConfig = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
   options: {
     encrypt: true,
-    trustServerCertificate: false, 
+    trustServerCertificate: false,
   },
-  port: 1433, 
+  port: parseInt(process.env.DB_PORT, 10), // Convertimos a número
 };
-export const connection = connect(config);
-// Crear la conexión
-async function connectToDatabase() {
+
+// Función para crear la conexión
+export async function connect() {
   try {
-    const pool = await connect(config);
-    console.log('Conexión exitosa a SQL Server');
+    const pool = await sql.connect(dbConfig);
+    console.log("Conexión exitosa a la base de datos");
     return pool;
-  } catch (err) {
-    console.error('Error al conectar a la base de datos:', err.message);
+  } catch (error) {
+    console.error("Error al conectar a la base de datos:", error.message);
+    throw error;
   }
 }
-
-// Llama a la función para conectar
-connectToDatabase();
